@@ -27,7 +27,7 @@
       </div>
     </section>
 
-<section class="rooms-section" id="your-rooms">
+    <section class="rooms-section" id="your-rooms">
   <h2>Your Rooms</h2>
   <div class="rooms-list" id="user-rooms"></div>
 </section>
@@ -64,15 +64,29 @@
 
   <div id="room-links-modal" class="modal hidden">
     <div class="modal-content">
-      <h3 id="modal-room-title">Room Links</h3>
-      <ul id="modal-links-list"></ul>
-      <input id="link-title" placeholder="Name" />
-      <input id="link-url" placeholder="URL" />
-      <div class="modal-buttons">
-        <button id="close-room-links" class="btn outlined">Close</button>
-        <button id="add-link" class="btn filled">Add Link</button>
-      </div>
+      <h3 id="modal-room-title">Room Name</h3>
+
+  <!-- Initial Link List View -->
+  <div id="link-list-view">
+    <ul id="modal-links-list"></ul>
+    <div class="modal-buttons">
+      <button id="show-add-link" class="btn filled">Add Link</button>
+      <button id="close-room-links" class="btn outlined">Close</button>
     </div>
+  </div>
+
+  <!-- Add/Edit Link View -->
+  <div id="add-link-form" class="hidden">
+    <input type="text" id="link-title" placeholder="Link Name" />
+    <input type="url" id="link-url" placeholder="URL" />
+    <div class="modal-buttons">
+      <button id="add-link" class="btn filled">Save</button>
+      <button id="cancel-add-link" class="btn outlined">Cancel</button>
+    </div>
+  </div>
+
+</div>
+
   </div>
 
   <script type="module" src="app.js"></script>

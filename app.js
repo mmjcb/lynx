@@ -1,12 +1,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
 import { getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
-// Firebase config
+// ---------------- Firebase Config ----------------
 const firebaseConfig = {
   apiKey: "AIzaSyCIZTSCVi-fgEZOzIJ0QihiwQjR9Qw3UBg",
   authDomain: "linkify-85e13.firebaseapp.com",
   projectId: "linkify-85e13",
-  storageBucket: "linkify-85e13.firebasestorage.app",
+  storageBucket: "linkify-85e13.appspot.com",
   messagingSenderId: "1097205354539",
   appId: "1:1097205354539:web:e4a9e62fe088cd33981a6e"
 };
@@ -14,15 +14,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// DOM Elements
+// ---------------- DOM Elements ----------------
 const createModal = document.getElementById("create-modal");
 const joinModal = document.getElementById("join-modal");
 const roomLinksModal = document.getElementById("room-links-modal");
+
 const modalLinksList = document.getElementById("modal-links-list");
 const modalRoomTitle = document.getElementById("modal-room-title");
+
 const linkTitleInput = document.getElementById("link-title");
 const linkUrlInput = document.getElementById("link-url");
 const addLinkBtn = document.getElementById("add-link");
+const showAddLinkBtn = document.getElementById("show-add-link");
+const addLinkForm = document.getElementById("add-link-form");
+const cancelAddLinkBtn = document.getElementById("cancel-add-link");
+
 const userRoomsList = document.getElementById("user-rooms");
 
 const openCreateBtn = document.getElementById("open-create-modal");
@@ -40,21 +46,27 @@ let currentRoomRef = null;
 
 // ---------------- Modal Functions ----------------
 function openModal(modal) { modal.classList.remove("hidden"); }
-function closeModal(modal) { modal.classList.add("hidden"); }
+function closeModal(modal) { 
+  modal.classList.add("hidden"); 
+  hideAddLinkForm();
+  resetAddLink();
+}
 
+// Open/Close modals
 openCreateBtn.onclick = () => openModal(createModal);
 openJoinBtn.onclick = () => openModal(joinModal);
 closeCreateBtn.onclick = () => closeModal(createModal);
 closeJoinBtn.onclick = () => closeModal(joinModal);
 closeRoomLinksBtn.onclick = () => closeModal(roomLinksModal);
 
+// Close modal when clicking outside
 [createModal, joinModal, roomLinksModal].forEach(modal => {
   modal.addEventListener("click", e => {
     if (e.target === modal) closeModal(modal);
   });
 });
 
-// ---------------- Load Rooms ----------------
+// ---------------- Rooms ----------------
 async function loadUserRooms() {
   const roomsCol = collection(db, "rooms");
   const snapshot = await getDocs(roomsCol);
@@ -83,29 +95,18 @@ async function loadUserRooms() {
     (roomData.links || []).forEach(link => {
       const span = document.createElement("span");
       span.innerHTML = `<a href="${link.url}" target="_blank">${link.title}</a>`;
-
-      // Prevent modal from opening when clicking the link
-      span.querySelector("a").addEventListener("click", e => {
-        e.stopPropagation();
-      });
-
+      span.querySelector("a").onclick = e => e.stopPropagation();
       linksListDiv.appendChild(span);
     });
 
     const options = card.querySelector(".room-options");
     const dropdown = card.querySelector(".dropdown-menu");
-
-    // Toggle dropdown
-    options.addEventListener("click", e => {
-      e.stopPropagation(); // prevent card click
+    options.onclick = e => {
+      e.stopPropagation();
       dropdown.classList.toggle("show");
-    });
+    };
 
-    // Close dropdown if clicked outside
-    document.addEventListener("click", () => dropdown.classList.remove("show"));
-
-    // Open room modal when clicking anywhere on the card except dropdown and links
-    card.addEventListener("click", () => openRoomModal(roomName));
+    card.onclick = () => openRoomModal(roomName);
 
     // Edit room
     card.querySelector(".edit-room").onclick = async e => {
@@ -132,13 +133,43 @@ async function loadUserRooms() {
   });
 }
 
+// Close dropdowns when clicking outside
+document.onclick = () => {
+  document.querySelectorAll(".dropdown-menu.show").forEach(menu => menu.classList.remove("show"));
+};
+
 // ---------------- Room Modal ----------------
 function openRoomModal(roomName) {
   modalRoomTitle.textContent = roomName;
   currentRoomRef = doc(db, "rooms", roomName);
   openModal(roomLinksModal);
+  hideAddLinkForm();
   loadLinks();
 }
+
+// ---------------- Links ----------------
+function resetAddLink() {
+  linkTitleInput.value = "";
+  linkUrlInput.value = "";
+  addLinkBtn.dataset.index = "";
+  addLinkBtn.textContent = "Save";
+}
+
+function showAddLinkForm() {
+  addLinkForm.classList.remove("hidden");
+  showAddLinkBtn.classList.add("hidden");
+  closeRoomLinksBtn.classList.add("hidden");
+}
+
+function hideAddLinkForm() {
+  addLinkForm.classList.add("hidden");
+  showAddLinkBtn.classList.remove("hidden");
+  closeRoomLinksBtn.classList.remove("hidden");
+  resetAddLink();
+}
+
+showAddLinkBtn.onclick = showAddLinkForm;
+cancelAddLinkBtn.onclick = hideAddLinkForm;
 
 function loadLinks() {
   if (!currentRoomRef) return;
@@ -146,31 +177,33 @@ function loadLinks() {
     if (!docSnap.exists()) return;
     const data = docSnap.data();
     modalLinksList.innerHTML = "";
-    linkTitleInput.value = "";
-    linkUrlInput.value = "";
-    addLinkBtn.textContent = "Add Link";
-    delete addLinkBtn.dataset.index;
+    hideAddLinkForm();
+    resetAddLink();
 
     (data.links || []).forEach((link, index) => {
       const li = document.createElement("li");
-      li.innerHTML = `
-        <span>${link.title} - <a href="${link.url}" target="_blank">${link.url}</a></span>
-        <button class="edit-link">Edit</button>
-        <button class="delete-link">Delete</button>
-      `;
+      li.innerHTML = `<span><a href="${link.url}" target="_blank">${link.title}</a></span>
+                      <div class="link-options">
+                        <button class="edit-link">Edit</button>
+                        <button class="delete-link">Delete</button>
+                      </div>`;
 
-      li.querySelector(".edit-link").onclick = () => {
+      li.querySelector(".edit-link").onclick = e => {
+        e.stopPropagation();
         linkTitleInput.value = link.title;
         linkUrlInput.value = link.url;
         addLinkBtn.dataset.index = index;
-        addLinkBtn.textContent = "Update Link";
+        addLinkBtn.textContent = "Update";
+        showAddLinkForm();
       };
 
-      li.querySelector(".delete-link").onclick = async () => {
+      li.querySelector(".delete-link").onclick = async e => {
+        e.stopPropagation();
         const updatedLinks = data.links.filter((_, i) => i !== index);
         await updateDoc(currentRoomRef, { links: updatedLinks });
       };
 
+      li.querySelector("a").onclick = e => e.stopPropagation();
       modalLinksList.appendChild(li);
     });
   });
@@ -185,17 +218,15 @@ addLinkBtn.onclick = async () => {
   const roomSnap = await getDoc(currentRoomRef);
   const roomData = roomSnap.data() || { links: [] };
 
-  if (addLinkBtn.dataset.index) {
-    roomData.links[parseInt(addLinkBtn.dataset.index)] = { title, url };
-    delete addLinkBtn.dataset.index;
-    addLinkBtn.textContent = "Add Link";
+  const index = Number(addLinkBtn.dataset.index);
+  if (!isNaN(index)) {
+    roomData.links[index] = { title, url };
   } else {
     roomData.links.push({ title, url });
   }
 
   await updateDoc(currentRoomRef, { links: roomData.links });
-  linkTitleInput.value = "";
-  linkUrlInput.value = "";
+  hideAddLinkForm();
 };
 
 // ---------------- Create / Join Room ----------------
