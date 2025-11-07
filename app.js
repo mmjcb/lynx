@@ -2,7 +2,15 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebas
 import { getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
 // Firebase config
-const firebaseConfig = { /* your config */ };
+const firebaseConfig = {
+  apiKey: "AIzaSyCIZTSCVi-fgEZOzIJ0QihiwQjR9Qw3UBg",
+  authDomain: "linkify-85e13.firebaseapp.com",
+  projectId: "linkify-85e13",
+  storageBucket: "linkify-85e13.firebasestorage.app",
+  messagingSenderId: "1097205354539",
+  appId: "1:1097205354539:web:e4a9e62fe088cd33981a6e"
+};
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -31,8 +39,8 @@ const joinRoomBtn = document.getElementById("join-room-btn");
 let currentRoomRef = null;
 
 // ---------------- Modal Functions ----------------
-function openModal(modal){ modal.classList.remove("hidden"); }
-function closeModal(modal){ modal.classList.add("hidden"); }
+function openModal(modal) { modal.classList.remove("hidden"); }
+function closeModal(modal) { modal.classList.add("hidden"); }
 
 openCreateBtn.onclick = () => openModal(createModal);
 openJoinBtn.onclick = () => openModal(joinModal);
@@ -41,38 +49,72 @@ closeJoinBtn.onclick = () => closeModal(joinModal);
 closeRoomLinksBtn.onclick = () => closeModal(roomLinksModal);
 
 [createModal, joinModal, roomLinksModal].forEach(modal => {
-  modal.addEventListener("click", e => { if(e.target===modal) closeModal(modal); });
+  modal.addEventListener("click", e => {
+    if (e.target === modal) closeModal(modal);
+  });
 });
 
 // ---------------- Load Rooms ----------------
-async function loadUserRooms(){
+async function loadUserRooms() {
   const roomsCol = collection(db, "rooms");
   const snapshot = await getDocs(roomsCol);
   userRoomsList.innerHTML = "";
 
   snapshot.forEach(docSnap => {
     const roomName = docSnap.id;
+    const roomData = docSnap.data();
+
     const card = document.createElement("div");
     card.classList.add("room-card");
     card.innerHTML = `
-      <h3>${roomName}</h3>
-      <div class="room-actions">
-        <button class="edit-room">Edit</button>
-        <button class="delete-room">Delete</button>
+      <div class="room-card-header">
+        <h3>${roomName}</h3>
+        <div class="room-options">⋮
+          <div class="dropdown-menu">
+            <button class="edit-room">Edit</button>
+            <button class="delete-room">Delete</button>
+          </div>
+        </div>
       </div>
+      <div class="links-list"></div>
     `;
 
-    // Open room modal
-    card.querySelector("h3").onclick = () => openRoomModal(roomName);
+    const linksListDiv = card.querySelector(".links-list");
+    (roomData.links || []).forEach(link => {
+      const span = document.createElement("span");
+      span.innerHTML = `<a href="${link.url}" target="_blank">${link.title}</a>`;
+
+      // Prevent modal from opening when clicking the link
+      span.querySelector("a").addEventListener("click", e => {
+        e.stopPropagation();
+      });
+
+      linksListDiv.appendChild(span);
+    });
+
+    const options = card.querySelector(".room-options");
+    const dropdown = card.querySelector(".dropdown-menu");
+
+    // Toggle dropdown
+    options.addEventListener("click", e => {
+      e.stopPropagation(); // prevent card click
+      dropdown.classList.toggle("show");
+    });
+
+    // Close dropdown if clicked outside
+    document.addEventListener("click", () => dropdown.classList.remove("show"));
+
+    // Open room modal when clicking anywhere on the card except dropdown and links
+    card.addEventListener("click", () => openRoomModal(roomName));
 
     // Edit room
     card.querySelector(".edit-room").onclick = async e => {
       e.stopPropagation();
       const newName = prompt("New room name:", roomName);
-      if(!newName || newName === roomName) return;
-      const roomRef = doc(db,"rooms",roomName);
+      if (!newName || newName === roomName) return;
+      const roomRef = doc(db, "rooms", roomName);
       const roomSnap = await getDoc(roomRef);
-      await setDoc(doc(db,"rooms",newName), roomSnap.data());
+      await setDoc(doc(db, "rooms", newName), roomSnap.data());
       await deleteDoc(roomRef);
       loadUserRooms();
     };
@@ -80,8 +122,8 @@ async function loadUserRooms(){
     // Delete room
     card.querySelector(".delete-room").onclick = async e => {
       e.stopPropagation();
-      if(confirm(`Delete room "${roomName}"?`)){
-        await deleteDoc(doc(db,"rooms",roomName));
+      if (confirm(`Delete room "${roomName}"?`)) {
+        await deleteDoc(doc(db, "rooms", roomName));
         loadUserRooms();
       }
     };
@@ -90,19 +132,18 @@ async function loadUserRooms(){
   });
 }
 
-// ---------------- Room Modal & Links ----------------
-function openRoomModal(roomName){
+// ---------------- Room Modal ----------------
+function openRoomModal(roomName) {
   modalRoomTitle.textContent = roomName;
-  currentRoomRef = doc(db,"rooms",roomName);
+  currentRoomRef = doc(db, "rooms", roomName);
   openModal(roomLinksModal);
   loadLinks();
 }
 
-function loadLinks(){
-  if(!currentRoomRef) return;
-
+function loadLinks() {
+  if (!currentRoomRef) return;
   onSnapshot(currentRoomRef, docSnap => {
-    if(!docSnap.exists()) return;
+    if (!docSnap.exists()) return;
     const data = docSnap.data();
     modalLinksList.innerHTML = "";
     linkTitleInput.value = "";
@@ -118,7 +159,6 @@ function loadLinks(){
         <button class="delete-link">Delete</button>
       `;
 
-      // Edit link
       li.querySelector(".edit-link").onclick = () => {
         linkTitleInput.value = link.title;
         linkUrlInput.value = link.url;
@@ -126,9 +166,8 @@ function loadLinks(){
         addLinkBtn.textContent = "Update Link";
       };
 
-      // Delete link
       li.querySelector(".delete-link").onclick = async () => {
-        const updatedLinks = data.links.filter((_,i) => i !== index);
+        const updatedLinks = data.links.filter((_, i) => i !== index);
         await updateDoc(currentRoomRef, { links: updatedLinks });
       };
 
@@ -137,16 +176,16 @@ function loadLinks(){
   });
 }
 
-// ---------------- Add/Update Link ----------------
+// ---------------- Add / Update Link ----------------
 addLinkBtn.onclick = async () => {
   const title = linkTitleInput.value.trim();
   const url = linkUrlInput.value.trim();
-  if(!title || !url) return alert("Fill both fields");
+  if (!title || !url) return alert("Fill both fields");
 
   const roomSnap = await getDoc(currentRoomRef);
   const roomData = roomSnap.data() || { links: [] };
 
-  if(addLinkBtn.dataset.index){
+  if (addLinkBtn.dataset.index) {
     roomData.links[parseInt(addLinkBtn.dataset.index)] = { title, url };
     delete addLinkBtn.dataset.index;
     addLinkBtn.textContent = "Add Link";
@@ -159,25 +198,24 @@ addLinkBtn.onclick = async () => {
   linkUrlInput.value = "";
 };
 
-// ---------------- Create Room ----------------
+// ---------------- Create / Join Room ----------------
 createRoomBtn.onclick = async () => {
   const roomName = createRoomInput.value.trim();
-  if(!roomName) return alert("Enter room name");
-  const roomRef = doc(db,"rooms",roomName);
+  if (!roomName) return alert("Enter room name");
+  const roomRef = doc(db, "rooms", roomName);
   const roomSnap = await getDoc(roomRef);
-  if(!roomSnap.exists()) await setDoc(roomRef, { links: [] });
+  if (!roomSnap.exists()) await setDoc(roomRef, { links: [] });
   createRoomInput.value = "";
   closeModal(createModal);
   loadUserRooms();
 };
 
-// ---------------- Join Room ----------------
 joinRoomBtn.onclick = async () => {
   const roomName = joinRoomInput.value.trim();
-  if(!roomName) return alert("Enter room code");
-  const roomRef = doc(db,"rooms",roomName);
+  if (!roomName) return alert("Enter room code");
+  const roomRef = doc(db, "rooms", roomName);
   const roomSnap = await getDoc(roomRef);
-  if(!roomSnap.exists()) return alert("Room not found");
+  if (!roomSnap.exists()) return alert("Room not found");
   joinRoomInput.value = "";
   closeModal(joinModal);
   openRoomModal(roomName);
