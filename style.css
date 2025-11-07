@@ -1,10 +1,10 @@
 /* ---------------- Reset & Base ---------------- */
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  }
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
 
 body, html {
 font-family: "Poppins", sans-serif;
@@ -71,7 +71,7 @@ position: absolute;
 top: 0; left: 0;
 width: 100%;
 height: 100%;
-background: url('[https://source.unsplash.com/1600x900/?education,classroom](https://source.unsplash.com/1600x900/?education,classroom)') no-repeat center center/cover;
+background: url('https://source.unsplash.com/1600x900/?education,classroom') no-repeat center center/cover;
 opacity: 0.15;
 z-index: 0;
 }
@@ -145,8 +145,9 @@ padding-left: 0.5rem;
 
 /* ---------------- Room Cards Grid ---------------- */
 .rooms-list {
+/* Grid template changed: max(550px, 1fr) ensures the card grows up to 550px */
 display: grid;
-grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Min size reduced to 300px for better fit */
 gap: 1.5rem;
 justify-content: center;
 }
@@ -160,7 +161,8 @@ transition: transform 0.2s ease, box-shadow 0.3s ease;
 display: flex;
 flex-direction: column;
 position: relative;
-width: 550px;
+/* FIX: Removed fixed width: 550px; to allow it to be responsive within the grid */
+width: auto; 
 min-height: 300px;
 padding: 1.8rem;
 }
@@ -370,15 +372,15 @@ border: none;
 cursor: pointer;
 }
 #modal-links-list li span a {
-  color: #eee;           /* normal text color */
-  text-decoration: none; /* remove underline */
-  font-weight: 600;      /* normal font weight */
-  transition: color 0.2s ease;
+color: #eee;
+text-decoration: none; 
+font-weight: 600;
+transition: color 0.2s ease;
 }
 
 #modal-links-list li span a:hover {
-  color: #ffffff;        /* subtle hover effect to indicate clickable */
-  text-decoration: none; /* optional: underline on hover */
+color: #ffffff;
+text-decoration: none; 
 }
 
 #modal-links-list li button.edit-link {
@@ -395,13 +397,35 @@ color: #fff;
 .hidden { display: none; }
 
 /* ---------------- Responsive ---------------- */
+@media (max-width: 1100px) {
+    /* New rule for larger tablets/laptops to ensure single column below 1100px */
+    .rooms-list {
+        /* When screen is narrower than 1100px, switch to a single flexible column */
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 768px) {
 .hero-section h1 { font-size: 2.5rem; }
 .hero-section p { font-size: 1.3rem; }
 .navbar { padding: 1rem 1.5rem; }
 .navbar .logo { font-size: 1.5rem; }
 .navbar .nav-links a { font-size: 1rem; }
-.rooms-list { grid-template-columns: 1fr; }
+/* .rooms-list { grid-template-columns: 1fr; } <-- Removed, handled by 1100px rule */
 .room-card h3 { font-size: 1.3rem; }
+.room-card { min-height: 250px; } /* Slightly reduce min-height on mobile */
 #add-link-form { flex-direction: column; gap: 0.5rem; }
+}
+
+@media (max-width: 580px) {
+    /* Ensure the action buttons stack nicely on small screens */
+    .hero-section .action-buttons {
+        flex-direction: column;
+        width: 100%;
+        align-items: stretch;
+    }
+    .hero-section .action-buttons .btn {
+        width: 100%;
+        text-align: center;
+    }
 }

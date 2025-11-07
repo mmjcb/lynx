@@ -2,94 +2,94 @@
 
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Linkify</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Linkify</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <nav class="navbar">
-    <div class="logo">Linkify</div>
-    <ul class="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#your-rooms">Your Rooms</a></li>
-    </ul>
-  </nav>
+<nav class="navbar">
+  <div class="logo">Linkify</div>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#your-rooms">Your Rooms</a></li>
+  </ul>
+</nav>
 
-  <main class="main-container">
-    <section class="hero-section">
-      <h1>Welcome to Linkify!</h1>
-      <p>All your class links organized in one place.</p>
-      <div class="action-buttons">
-        <button id="open-create-modal" class="btn filled">Create Room</button>
-        <button id="open-join-modal" class="btn outlined">Join Room</button>
-      </div>
-    </section>
-
-    <section class="rooms-section" id="your-rooms">
-  <h2>Your Rooms</h2>
-  <div class="rooms-list" id="user-rooms"></div>
-</section>
-
-  </main>
-
-  <!-- Create Room Modal -->
-
-  <div id="create-modal" class="modal hidden">
-    <div class="modal-content">
-      <h3>Create New Room</h3>
-      <input id="create-room-name" placeholder="Enter room name" />
-      <div class="modal-buttons">
-        <button id="close-create" class="btn outlined">Cancel</button>
-        <button id="create-room-btn" class="btn filled">Create</button>
-      </div>
+<main class="main-container">
+  <section class="hero-section">
+    <h1>Welcome to Linkify!</h1>
+    <p>All your class links organized in one place.</p>
+    <div class="action-buttons">
+      <button id="open-create-modal" class="btn filled">Create Room</button>
+      <button id="open-join-modal" class="btn outlined">Join Room</button>
     </div>
-  </div>
+  </section>
 
-  <!-- Join Room Modal -->
+  <section class="rooms-section" id="your-rooms">
+    <h2>Your Rooms</h2>
+    <div class="rooms-list" id="user-rooms"></div>
+  </section>
+</main>
 
-  <div id="join-modal" class="modal hidden">
-    <div class="modal-content">
-      <h3>Join a Room</h3>
-      <input id="join-room-code" placeholder="Enter room code" />
-      <div class="modal-buttons">
-        <button id="close-join" class="btn outlined">Cancel</button>
-        <button id="join-room-btn" class="btn filled">Join</button>
-      </div>
-    </div>
-  </div>
+<!-- Create Room Modal -->
 
-  <!-- Room Links Modal -->
-
-  <div id="room-links-modal" class="modal hidden">
-    <div class="modal-content">
-      <h3 id="modal-room-title">Room Name</h3>
-
-  <!-- Initial Link List View -->
-  <div id="link-list-view">
-    <ul id="modal-links-list"></ul>
+<div id="create-modal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Create New Room</h3>
+    <input id="create-room-name" placeholder="Enter room name" />
     <div class="modal-buttons">
-      <button id="show-add-link" class="btn filled">Add Link</button>
-      <button id="close-room-links" class="btn outlined">Close</button>
+      <button id="close-create" class="btn outlined">Cancel</button>
+      <button id="create-room-btn" class="btn filled">Create</button>
     </div>
   </div>
+</div>
 
-  <!-- Add/Edit Link View -->
-  <div id="add-link-form" class="hidden">
-    <input type="text" id="link-title" placeholder="Link Name" />
-    <input type="url" id="link-url" placeholder="URL" />
+<!-- Join Room Modal -->
+
+<div id="join-modal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Join a Room</h3>
+    <input id="join-room-code" placeholder="Enter room code" />
     <div class="modal-buttons">
-      <button id="add-link" class="btn filled">Save</button>
-      <button id="cancel-add-link" class="btn outlined">Cancel</button>
+      <button id="close-join" class="btn outlined">Cancel</button>
+      <button id="join-room-btn" class="btn filled">Join</button>
     </div>
   </div>
+</div>
 
+<!-- Room Links Modal (only one, no duplicates) -->
+
+<div id="room-links-modal" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="modal-room-title">Room Name</h3>
+
+<!-- Link List View -->
+<div id="link-list-view">
+  <ul id="modal-links-list"></ul>
+  <div class="modal-buttons">
+    <button id="show-add-link" class="btn filled">Add Link</button>
+    <button id="close-room-links" class="btn outlined">Close</button>
+  </div>
+</div>
+
+<!-- Add/Edit Link Form -->
+<div id="add-link-form" class="hidden">
+  <label for="link-title">Link Name</label>
+  <input type="text" id="link-title" placeholder="Enter link name" />
+  <label for="link-url">URL</label>
+  <input type="url" id="link-url" placeholder="Enter URL" />
+  <div class="modal-buttons">
+    <button id="add-link" class="btn filled">Save</button>
+    <button id="cancel-add-link" class="btn outlined">Cancel</button>
+  </div>
 </div>
 
   </div>
+</div>
 
-  <script type="module" src="app.js"></script>
+<script type="module" src="app.js"></script>
 
 </body>
 </html>
