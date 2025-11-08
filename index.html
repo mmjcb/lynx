@@ -1,121 +1,150 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Lynx</title>
-<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lynx</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="images/lynx-logo.png" />
 </head>
 <body>
 
-<nav class="navbar">
-  <div class="logo">Linkify</div>
-  <ul class="nav-links">
-    <li><a href="#">Home</a></li>
-    <li><a href="#your-rooms">Your Rooms</a></li>
-  </ul>
-  
-    <div class="auth-controls">
-        <button id="open-signin-modal" class="btn outlined auth-btn signed-out-only">Sign In</button>
-    <button id="open-signup-modal" class="btn filled auth-btn signed-out-only">Sign Up</button>
-    <button id="signout-btn" class="btn outlined auth-btn signed-in-only hidden">Sign Out</button>
-  </div>
-</nav>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo-container">
+      <img src="images/lynx-logo.png" alt="Lynx Logo" class="logo-img">
+      <div class="logo-text">LYNX</div>
+    </div>
+    <div class="auth-controls">
+      <button id="open-signin-modal" class="btn outlined auth-btn signed-out-only">Sign In</button>
+      <button id="open-signup-modal" class="btn filled auth-btn signed-out-only">Sign Up</button>
+      <button id="signout-btn" class="btn outlined auth-btn signed-in-only hidden">Sign Out</button>
+    </div>
+  </nav>
 
-<main class="main-container">
-  <section class="hero-section">
-    <h1>Welcome to Lynx!</h1>
-    <p>All your links organized and secured in one place.</p>
-    
-        <div class="action-buttons signed-in-only hidden">
-      <button id="open-create-room-modal" class="btn filled">Create New Room</button>
-      <button id="open-join-room-modal" class="btn outlined">Join Existing Room</button>
-    </div>
-</section>
+  <!-- Main Content -->
+  <main class="main-container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <h1>Welcome to Lynx!</h1>
+      <p>All your links organized and secured in one place.</p>
+      <div class="action-buttons signed-in-only hidden">
+        <button id="open-create-room-modal" class="btn filled">Create New Room</button>
+        <button id="open-join-room-modal" class="btn outlined">Join Room</button>
+      </div>
+    </section>
 
-  <section class="rooms-section" id="your-rooms">
-    <h2>Your Rooms</h2>
-    <div class="rooms-list" id="user-rooms">
-          </div>
-  </section>
-</main>
+    <!-- Rooms Section -->
+    <section class="rooms-section" id="your-rooms">
+      <h2>Your Rooms</h2>
+      <div class="rooms-list" id="user-rooms"></div>
+    </section>
+  </main>
 
-<div id="signup-modal" class="modal hidden">
-  <div class="modal-content">
-    <h3>Create an Account</h3>
-        <input type="text" id="signup-username-input" placeholder="Choose a Username" required />
-        <input type="email" id="signup-email-input" placeholder="Enter Login ID (Must be your email)" required />
-        <input type="password" id="signup-password-input" placeholder="Choose a password" required />
-    <div class="modal-buttons">
-      <button id="close-signup" class="btn outlined">Cancel</button>
-      <button id="signup-btn" class="btn filled">Sign Up</button>
-    </div>
-  </div>
-</div>
+  <!-- Modals -->
+  <!-- Signup -->
+  <div id="signup-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Create an Account</h3>
+      <input type="text" id="signup-username-input" placeholder="Choose a Username" required />
+      <input type="email" id="signup-email-input" placeholder="Enter Login ID (Must be your email)" required />
+      <input type="password" id="signup-password-input" placeholder="Choose a password" required />
+      <div class="modal-buttons">
+        <button id="close-signup" class="btn outlined">Cancel</button>
+        <button id="signup-btn" class="btn filled">Sign Up</button>
+      </div>
+    </div>
+  </div>
 
-<div id="signin-modal" class="modal hidden">
-  <div class="modal-content">
-    <h3>Sign In</h3>
-        <input type="email" id="signin-email-input" placeholder="Enter your Login ID (Email)" required />
-        <input type="password" id="signin-password-input" placeholder="Enter your password" required />
-    <div class="modal-buttons">
-      <button id="close-signin" class="btn outlined">Cancel</button>
-      <button id="signin-btn" class="btn filled">Sign In</button>
-    </div>
-  </div>
-</div>
+  <!-- Signin -->
+  <div id="signin-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Sign In</h3>
+      <input type="email" id="signin-email-input" placeholder="Enter your Login ID (Email)" required />
+      <input type="password" id="signin-password-input" placeholder="Enter your password" required />
+      <div class="modal-buttons">
+        <button id="close-signin" class="btn outlined">Cancel</button>
+        <button id="signin-btn" class="btn filled">Sign In</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Room -->
+  <div id="create-room-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Create New Room</h3>
+      <input id="create-room-name-input" placeholder="Enter room name" />
+      <div class="modal-buttons">
+        <button id="close-create-room" class="btn outlined">Cancel</button>
+        <button id="create-room-action-btn" class="btn filled">Create Room</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Join Room -->
+  <div id="join-room-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Join a Room</h3>
+      <input id="join-room-code-input" placeholder="Enter room code" />
+      <div class="modal-buttons">
+        <button id="close-join-room" class="btn outlined">Cancel</button>
+        <button id="join-room-action-btn" class="btn filled">Join</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Room Links -->
+  <div id="room-links-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3 id="modal-room-title">Room Name</h3>
+
+      <div id="link-list-view">
+        <ul id="modal-links-list"></ul>
+        <div class="modal-buttons">
+          <button id="show-add-link" class="btn filled">Add Link</button>
+          <button id="close-room-links" class="btn outlined">Close</button>
+        </div>
+      </div>
+
+      <div id="add-link-form" class="hidden">
+        <label for="link-title">Link Name</label>
+        <input type="text" id="link-title" placeholder="Enter link name" />
+        <label for="link-url">URL</label>
+        <input type="url" id="link-url" placeholder="Enter URL" />
+        <div class="modal-buttons">
+          <button id="add-link" class="btn filled">Save</button>
+          <button id="cancel-add-link" class="btn outlined">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Room Modal -->
+    <div id="edit-room-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3>Edit Room Name</h3>
+        <input id="edit-room-name-input" placeholder="Enter new room name" />
+        <div class="modal-buttons">
+        <button id="close-edit-room" class="btn outlined">Cancel</button>
+        <button id="save-edit-room" class="btn filled">Save</button>
+        </div>
+    </div>
+    </div>
+
+    <!-- Delete Room Modal -->
+    <div id="delete-room-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3>Delete Room</h3>
+        <p id="delete-room-msg">Are you sure you want to delete this room?</p>
+        <div class="modal-buttons">
+        <button id="close-delete-room" class="btn outlined">Cancel</button>
+        <button id="confirm-delete-room" class="btn filled">Delete</button>
+        </div>
+    </div>
+    </div>
 
 
-<div id="create-room-modal" class="modal hidden">
-  <div class="modal-content">
-    <h3>Create New Room</h3>
-    <input id="create-room-name-input" placeholder="Enter room name" />
-    <div class="modal-buttons">
-      <button id="close-create-room" class="btn outlined">Cancel</button>
-      <button id="create-room-action-btn" class="btn filled">Create Room</button>
-    </div>
-    </div>
-</div>
-
-<div id="join-room-modal" class="modal hidden">
-  <div class="modal-content">
-    <h3>Join a Room</h3>
-    <input id="join-room-code-input" placeholder="Enter room code" />
-    <div class="modal-buttons">
-      <button id="close-join-room" class="btn outlined">Cancel</button>
-      <button id="join-room-action-btn" class="btn filled">Join</button>
-    </div>
-  </div>
-</div>
-
-<div id="room-links-modal" class="modal hidden">
-  <div class="modal-content">
-    <h3 id="modal-room-title">Room Name</h3>
-
-<div id="link-list-view">
-  <ul id="modal-links-list"></ul>
-  <div class="modal-buttons">
-    <button id="show-add-link" class="btn filled">Add Link</button>
-    <button id="close-room-links" class="btn outlined">Close</button>
-  </div>
-</div>
-
-<div id="add-link-form" class="hidden">
-  <label for="link-title">Link Name</label>
-  <input type="text" id="link-title" placeholder="Enter link name" />
-  <label for="link-url">URL</label>
-  <input type="url" id="link-url" placeholder="Enter URL" />
-  <div class="modal-buttons">
-    <button id="add-link" class="btn filled">Save</button>
-    <button id="cancel-add-link" class="btn outlined">Cancel</button>
-  </div>
-</div>
-
-  </div>
-</div>
-
-<script type="module" src="app.js"></script>
-
+  <!-- JS -->
+  <script type="module" src="app.js"></script>
 </body>
 </html>

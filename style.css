@@ -1,5 +1,4 @@
 /* ---------------- Reset & Base ---------------- */
-
 * {
     box-sizing: border-box;
     margin: 0;
@@ -16,44 +15,38 @@ body, html {
 
 /* ---------------- Navbar ---------------- */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 3rem;
-    background-color: rgba(31,31,31,0.95);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 3rem;
+  background-color: rgba(31,31,31,0.95);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
 }
 
-.navbar .logo {
-    font-weight: 800;
-    font-size: 2rem;
-    letter-spacing: 1px;
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
 }
 
-.navbar .nav-links {
-    display: flex;
-    gap: 2rem;
-    list-style: none;
+.logo-img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
 }
 
-.navbar .nav-links a {
-    color: #eee;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.1rem;
+.logo-text {
+  font-weight: 800;
+  font-size: 2rem;
+  letter-spacing: 1px;
 }
 
-.navbar .nav-links a:hover {
-    color: #2d9bf0;
-}
-
-/* 🆕 NEW: Authentication Controls Styling */
 .auth-controls {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 
 /* ---------------- Hero Section ---------------- */
@@ -76,8 +69,7 @@ body, html {
     position: absolute;
     top: 0; left: 0;
     width: 100%;
-    height: 100%;
-    background: url('https://source.unsplash.com/1600x900/?education,classroom') no-repeat center center/cover;
+    height: 100%; 
     opacity: 0.15;
     z-index: 0;
 }
@@ -108,6 +100,7 @@ body, html {
 /* ---------------- Buttons ---------------- */
 .btn {
     padding: 1rem 2.2rem;
+    font-size: 1rem;
     border-radius: 50px;
     font-weight: 600;
     cursor: pointer;
@@ -115,7 +108,7 @@ body, html {
     border: 2px solid transparent;
 }
 
-/* Override padding for smaller navbar buttons */
+/* Smaller navbar buttons */
 .auth-btn {
     padding: 0.6rem 1.2rem;
     font-size: 0.9rem;
@@ -264,7 +257,7 @@ body, html {
     text-decoration: none;
 }
 
-/* Scrollbar for links */
+/* Scrollbar for room card links */
 .room-card .links-list::-webkit-scrollbar {
     width: 6px;
 }
@@ -285,12 +278,15 @@ body, html {
     z-index: 200;
 }
 
+/* Bigger Modal */
 .modal-content {
     background-color: #1f1f1f;
-    padding: 2.5rem;
+    padding: 3rem;
     border-radius: 15px;
-    width: 90%;
-    max-width: 500px;
+    width: 95%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
     box-shadow: 0 10px 25px rgba(0,0,0,0.7);
     display: flex;
     flex-direction: column;
@@ -330,9 +326,31 @@ body, html {
 
 .modal-buttons button {
     margin-top: 0;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
-/* ---------------- Room Links Modal Views ---------------- */
+.modal-buttons button.filled {
+    background-color: #2d9bf0;
+    color: #fff;
+}
+.modal-buttons button.filled:hover {
+    background-color: #1a7cd6;
+}
+
+.modal-buttons button.cancel {
+    background-color: #e5e7eb;
+    color: #111827;
+}
+.modal-buttons button.cancel:hover {
+    background-color: #d1d5db;
+}
+
+/* ---------------- Room Links Modal ---------------- */
 #link-list-view,
 #add-link-form {
     display: flex;
@@ -348,15 +366,38 @@ body, html {
     align-self: flex-start;
 }
 
-/* ---------------- Room Links Modal Specific ---------------- */
 #modal-links-list {
     list-style: none;
-    max-height: 250px;
+    max-height: 400px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     padding: 0;
+    
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #2d9bf0 #1f1f1f;
+}
+
+/* Webkit scrollbar for modal links */
+#modal-links-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+#modal-links-list::-webkit-scrollbar-track {
+    background: #1f1f1f;
+    border-radius: 6px;
+}
+
+#modal-links-list::-webkit-scrollbar-thumb {
+    background-color: #2d9bf0;
+    border-radius: 6px;
+    border: 2px solid #1f1f1f;
+}
+
+#modal-links-list::-webkit-scrollbar-thumb:hover {
+    background-color: #1a7cd6;
 }
 
 #modal-links-list li {
@@ -373,55 +414,56 @@ body, html {
     color: #eee;
 }
 
-#modal-links-list li button {
-    margin-left: 0.5rem;
-    padding: 0.35rem 0.7rem;
-    font-size: 0.85rem;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-}
 #modal-links-list li span a {
     color: #eee;
     text-decoration: none; 
     font-weight: 600;
     transition: color 0.2s ease;
 }
-
 #modal-links-list li span a:hover {
     color: #ffffff;
-    text-decoration: none; 
 }
 
 #modal-links-list li button.edit-link {
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
     background-color: #2d9bf0;
     color: #fff;
 }
 
+#modal-links-list li button.edit-link:hover {
+    background-color: #1a7cd6;
+}
+
 #modal-links-list li button.delete-link {
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
     background-color: #ff4c4c;
     color: #fff;
 }
 
-/* Hidden class */
+#modal-links-list li button.delete-link:hover {
+    background-color: #e63946;
+}
+
+/* ---------------- Hidden & Visibility ---------------- */
 .hidden { display: none; }
 
-/* ---------------- DYNAMIC VISIBILITY RULES (for Auth) ---------------- */
-
-/* Items meant for signed-in users (e.g., Sign Out, Room Buttons) */
 .signed-in-only.hidden { display: none !important; }
-
-/* Items meant for signed-out users (e.g., Sign In, Sign Up) */
-/* The JS will automatically hide these by removing the 'hidden' class when signed out. */
-.signed-out-only { display: flex; } /* Ensure they appear inline by default */
-.signed-out-only.hidden { display: none !important; } /* If JS adds hidden, hide it */
-
+.signed-out-only { display: flex; }
+.signed-out-only.hidden { display: none !important; }
 
 /* ---------------- Responsive ---------------- */
 @media (max-width: 1100px) {
-    .rooms-list {
-        grid-template-columns: 1fr;
-    }
+    .rooms-list { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
@@ -433,18 +475,12 @@ body, html {
     .room-card h3 { font-size: 1.3rem; }
     .room-card { min-height: 250px; }
     #add-link-form { flex-direction: column; gap: 0.5rem; }
-
-    /* Stack auth controls in the navbar on small screens */
     .navbar .auth-controls {
         flex-direction: column;
         gap: 0.5rem;
         align-items: flex-end;
     }
-    .navbar {
-        flex-direction: row;
-        flex-wrap: wrap;
-        padding-bottom: 0.5rem;
-    }
+    .navbar { flex-wrap: wrap; padding-bottom: 0.5rem; }
 }
 
 @media (max-width: 580px) {
