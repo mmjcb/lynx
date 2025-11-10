@@ -494,3 +494,70 @@ body, html {
         text-align: center;
     }
 }
+
+/* ---------------- Alerts ---------------- */
+#custom-alert-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem; /* top-right corner */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* keep the stack aligned to the right */
+  gap: 0.6rem;
+  z-index: 10000;
+}
+
+.custom-alert {
+  padding: 0.9rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #fff;
+  background: #1a1a1a; /* Dark base */
+  border: 2px solid #2d9bf0; /* Blue outline */
+  box-shadow: 0 4px 15px rgba(45,155,240,0.25);
+  text-align: center; /* center the text */
+  display: flex;
+  justify-content: center; /* center text horizontally */
+  align-items: center; /* center text vertically */
+  min-width: 260px;
+  animation: fadeIn 0.3s ease, fadeOut 0.4s ease forwards;
+  animation-delay: 0s, 3s; /* Auto fade out after 3s */
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.custom-alert:hover {
+  transform: translateX(-5px); /* slide slightly left on hover */
+  box-shadow: 0 6px 20px rgba(45,155,240,0.4);
+}
+
+/* Variants – subtle color glow around border/text */
+.custom-alert.info {
+  border-color: #2d9bf0;
+  color: #2d9bf0;
+}
+
+.custom-alert.success {
+  border-color: #2d9bf0;
+  color: #2d9bf0;
+}
+
+.custom-alert.warning {
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+.custom-alert.error {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(10px); } /* slide in from right */
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(15px); } /* slide out to right */
+}

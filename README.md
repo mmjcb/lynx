@@ -27,4 +27,4 @@ Lynx is a web application that allows users to organize, manage, and share their
 - **Frontend**: HTML, CSS, JavaScript  
 - **Backend / Database**: Firebase Firestore  
 - **Authentication**: Firebase Auth  
-- **Hosting**: Firebase Hosting (optional)
+- **Hosting**: Vercel
