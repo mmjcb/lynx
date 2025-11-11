@@ -210,8 +210,8 @@ async function loadUserRooms() {
           <h3>${roomName}</h3>
           <div class="room-options">⋮
             <div class="dropdown-menu">
-              <button class="edit-room">Edit</button>
-              <button class="delete-room">Delete</button>
+              <button class="edit-room">Edit Room Name</button>
+              <button class="delete-room">Delete Room</button>
             </div>
           </div>
         </div>
