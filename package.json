@@ -1,0 +1,24 @@
+{
+  "name": "lynx",
+  "version": "1.0.0",
+  "description": "Lynx is a web application that allows users to organize, manage, and share their links in a secure and easy-to-use platform. Create rooms, add links, and collaborate with others seamlessly.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmjcb/lynx.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mmjcb/lynx/issues"
+  },
+  "homepage": "https://github.com/mmjcb/lynx#readme",
+  "dependencies": {
+    "@capacitor/android": "^7.4.4",
+    "@capacitor/ios": "^7.4.4"
+  }
+}
